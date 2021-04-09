@@ -1,0 +1,8 @@
+fastapi
+pydantic
+aiofiles
+pony
+pymysql
+jinja2
+uvicorn
+aiohttp
