@@ -13,31 +13,31 @@
   },
   "arguments": {
     "execute": {
-      "url": "https://direcionalsf.loca.lt/api/data",
+      "url": "https://direcional-salesforce.herokuapp.com/api/data",
       "verb": "POST",
       "format": "json",
       "inArguments": []
     }
   },
   "configurationArguments": {
-    "applicationExtensionKey": "9b7d5ea3-9dda-47aa-ad8b-81e5cb17c176",
+    "applicationExtensionKey": "7fa691d9-d3a6-41c4-8224-326784436dcf",
     "save": {
-      "url": "https://direcionalsf.loca.lt/api/save",
+      "url": "https://direcional-salesforce.herokuapp.com/api/save",
       "verb": "POST",
       "useJwt": true
     },
     "publish": {
-      "url": "https://direcionalsf.loca.lt/api/publish",
+      "url": "https://direcional-salesforce.herokuapp.com/api/publish",
       "verb": "POST",
       "useJwt": true
     },
     "stop": {
-      "url": "https://direcionalsf.loca.lt/api/stop",
+      "url": "https://direcional-salesforce.herokuapp.com/api/stop",
       "verb": "POST",
       "useJwt": true
     },
     "validate": {
-      "url": "https://direcionalsf.loca.lt/api/validate",
+      "url": "https://direcional-salesforce.herokuapp.com/api/validate",
       "verb": "POST",
       "useJwt": true
     }
