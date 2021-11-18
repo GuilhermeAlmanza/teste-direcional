@@ -73,7 +73,7 @@ class OperationsController(Controller):
             )
             return True
         except:
-            quit()
+            return False
 
         
     def get_message(self, data: DataDTO):
