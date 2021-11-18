@@ -1,6 +1,6 @@
-from core.api import get_application
+from src.core.api import get_application
 from uvicorn import run
-from routing import router
+from src.routing import router
 
 app = get_application(router.routes)
 

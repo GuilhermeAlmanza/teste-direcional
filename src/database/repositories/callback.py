@@ -1,6 +1,6 @@
-from database.entities.callback import Callback
-from database.repositories.base import Repository
-from dtos import CallbackBodyDTO
+from src.database.entities.callback import Callback
+from src.database.repositories.base import Repository
+from src.dtos import CallbackBodyDTO
 
 class CallbackRepository(Repository):
     def serialize(self, obj):

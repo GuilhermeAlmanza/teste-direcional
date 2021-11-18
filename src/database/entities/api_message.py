@@ -1,7 +1,7 @@
 from re import T
 from pony import orm
 from pony.orm.core import composite_key
-from database import db_client
+from src.database import db_client
 from datetime import datetime
 
 

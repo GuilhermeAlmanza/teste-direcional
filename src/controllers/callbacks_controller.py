@@ -1,11 +1,11 @@
 from fastapi.param_functions import Depends
 from starlette.requests import Request
 from starlette.responses import Response
-from controllers import Controller
-from database.repositories.api_message import APIMessageRepository
-from database.repositories.callback import CallbackRepository
-from database.repositories.reply import ReplyRepository
-from dtos import APIMessageDTO, APIReplyDTO, CallbackBodyDTO
+from src.controllers import Controller
+from src.database.repositories.api_message import APIMessageRepository
+from src.database.repositories.callback import CallbackRepository
+from src.database.repositories.reply import ReplyRepository
+from src.dtos import APIMessageDTO, APIReplyDTO, CallbackBodyDTO
 from starlette.status import HTTP_204_NO_CONTENT
 
 api_message_repository = APIMessageRepository()

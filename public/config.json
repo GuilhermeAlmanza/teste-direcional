@@ -7,37 +7,37 @@
   "type": "REST",
   "lang": {
     "en-US": {
-      "name": "SMS Pontal",
+      "name": "WhatsApp Direcional",
       "step1Label": "Configure Activity"
     }
   },
   "arguments": {
     "execute": {
-      "url": "https://pontal-blu.loca.lt/api/data",
+      "url": "https://direcionalsf.loca.lt/api/data",
       "verb": "POST",
       "format": "json",
       "inArguments": []
     }
   },
   "configurationArguments": {
-    "applicationExtensionKey": "625eeda3-9595-4ddc-8090-cd6c609a01a2",
+    "applicationExtensionKey": "9b7d5ea3-9dda-47aa-ad8b-81e5cb17c176",
     "save": {
-      "url": "https://pontal-blu.loca.lt/api/save",
+      "url": "https://direcionalsf.loca.lt/api/save",
       "verb": "POST",
       "useJwt": true
     },
     "publish": {
-      "url": "https://pontal-blu.loca.lt/api/publish",
+      "url": "https://direcionalsf.loca.lt/api/publish",
       "verb": "POST",
       "useJwt": true
     },
     "stop": {
-      "url": "https://pontal-blu.loca.lt/api/stop",
+      "url": "https://direcionalsf.loca.lt/api/stop",
       "verb": "POST",
       "useJwt": true
     },
     "validate": {
-      "url": "https://pontal-blu.loca.lt/api/validate",
+      "url": "https://direcionalsf.loca.lt/api/validate",
       "verb": "POST",
       "useJwt": true
     }

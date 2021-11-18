@@ -9,6 +9,7 @@ connection.trigger("requestTokens");
 connection.trigger("requestTriggerEventDefinition");
 
 const schema = {};
+let body = {metadata:{}};
 
 connection.on("requestedTriggerEventDefinition", function (eventDefinitionModel) {
   if (eventDefinitionModel) {
@@ -27,19 +28,30 @@ const textArea = block.querySelector("#textarea");
 connection.on("initActivity", (data) => {
   createdData = { ...createdData, ...data };
   createdData.isConfigured = false;
-  insertInputElement("phoneField", "Campo de Telefone", getInAttributes("phone"), buildFieldDataListener("phone"));
+  body = {...body, ...JSON.parse((createdData.arguments || {execute:{body:'{}'}}).execute.body)}
+  console.log(body)
+  /*
+  insertInputElement("namespaceField", "Nome Space(Template) Smooch", body.metadata.namespace || '', buildFieldDataListener("namespace"));
+  insertInputElement("nameTemplate", "Nome (Template) Smooch", body.metadata.nametemplate || '', buildFieldDataListener("nametemplate"));
+  insertInputElement("imageField", "Url da Imagem", body.metadata.image || '', buildFieldDataListener("image"));
+  setMessage();
+  */
+  insertInputElement("idTemplate", "ID Template (Blip)", body.metadata.namespace || '', buildFieldDataListener("idtemplate"));
+  insertInputElement("nameTemplate", "Nome Template (Blip)", body.metadata.nametemplate || '', buildFieldDataListener("nametemplate"));
+  insertInputElement("idSubBot", "id Sub (Blip)", body.metadata.idsubbot || '', buildFieldDataListener("idsubbot"));
+  insertInputElement("idFluxo", "id Fluxo (Blip)", body.metadata.idfluxo || '', buildFieldDataListener("idfluxo"));
+  insertInputElement("idBloco", "id Bloco (Blip)", body.metadata.idbloco || '', buildFieldDataListener("idbloco"));
   setMessage();
 });
 
 const setMessage = () => {
-  console.log(createdData["metaData"].message);
-  textArea.innerHTML = textArea.innerHTML.replace("{{message}}", createdData["metaData"].message || "");
+  textArea.innerHTML = textArea.innerHTML.replace("{{message}}", body.message || "");
   textArea.addEventListener("focusout", function (event) {
     if (!event.target.value) {
       console.log(createdData);
       return;
     }
-    createdData.arguments.execute.body = JSON.stringify({ message: event.target.value });
+    body["message"] = event.target.value
   });
 };
 
@@ -57,13 +69,7 @@ const getInAttributes = (field) => {
 const buildFieldDataListener = (name) => (event) => setInAttributesField(name, event.target.value);
 
 const setInAttributesField = (field, value) => {
-  createdData["arguments"] = createdData["arguments"] || {};
-  createdData["arguments"].execute = createdData["arguments"].execute || {};
-
-  createdData["arguments"].execute.inArguments = createdData["arguments"].execute.inArguments || [];
-  insertedObj = {};
-  insertedObj[field] = "{{Event." + eventDefinitionKey + "." + value + "}}";
-  createdData["arguments"].execute.inArguments.push(insertedObj);
+  body.metadata[field] = value
 };
 
 const insertInputElement = (name, label, value, eventListener) => {
@@ -122,6 +128,7 @@ const save = () => {
   createdData["metaData"] = createdData["metaData"] || {};
   createdData["metaData"].isConfigured = true;
   createdData["arguments"].execute.inArguments.push(schema);
-  console.log(schema);
+  createdData.arguments.execute.body = JSON.stringify(body)
+  console.log(schema, createdData.arguments.execute.body);
   connection.trigger("updateActivity", createdData);
 };

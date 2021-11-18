@@ -3,8 +3,8 @@ from fastapi import FastAPI
 from fastapi.routing import APIRouter
 from fastapi import Request
 from fastapi.staticfiles import StaticFiles
-from services import session_manager
-from core.settings import STATIC_DIR, logger
+from src.services import session_manager
+from src.core.settings import STATIC_DIR, logger
 
 
 

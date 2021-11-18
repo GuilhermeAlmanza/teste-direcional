@@ -37,10 +37,16 @@ class DataDTO(DTO):
 
 
 class SMSBody(DTO):
-    to: str
+    telephone: str
     message: str
-    url_callback: str = "https://pontal-blu.loca.lt/api/listen"
     reference: str = "Default"
+    metadata: dict
+
+class MessageBody(DTO):
+    telephone: str
+    message:str
+    reference: str = "Default"
+    metadata: dict
 
 class APIMessageDTO(DTO):
     type: str = "api_message"

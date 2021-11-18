@@ -1,19 +1,23 @@
 import re
-from controllers import Controller
-from core.settings import logger
-from dtos import DataDTO, InArgumentDTO, SMSBody, APIMessageDTO
-from services import send_single_sms, session_manager
-from database.repositories.api_message import APIMessageRepository
+from src.controllers import Controller
+from src.core.settings import logger
+from src.dtos import DataDTO, InArgumentDTO, MessageBody, SMSBody, APIMessageDTO
+from src.services import send_single_sms, session_manager
+from src.database.repositories.api_message import APIMessageRepository
+from src.retrieve_user import Endpoint, IdDest
+from src.trigger import Trigger
+from src.redirect_flow import RedirectFlow
 
 placeholder_regexp = re.compile(r"<<[a-zA-Z]+>>")
 field_name_regexp = re.compile(r"[a-zA-Z]+")
 
-api_message_repository = APIMessageRepository()
+#api_message_repository = APIMessageRepository()
 
 
 class OperationsController(Controller):
     def include_routes(self):
-        self.router.post("/data", name="receive data")(self.receive_data)
+        #self.router.post("/data", name="receive data")(self.receive_data)
+        self.router.post("/data", name="receive data")(self.rec_data)
         self.router.post("/save", response_model=None, name="save")(self.save)
         self.router.post("/validate", response_model=None, name="validate")(
             self.validate
@@ -40,19 +44,38 @@ class OperationsController(Controller):
     def log_data(phone: str, journey: str):
         logger.info(f"Received data from {phone} in journey {journey}")
 
-    async def receive_data(self, data: DataDTO):
-        phone = self.get_in_argument(data.in_arguments, "phone", "user")
-        self.log_data(phone, data.journey_id)
+    async def receive_data(self, data:dict):
+        #phone = self.get_in_argument(data.in_arguments, "phone", "user")
+        #self.log_data(data[], data.['journey_id'])
+
         async for response in send_single_sms(
             session_manager,
             SMSBody(
-                to=phone,
-                message=self.get_message(data),
-                reference=data.journey_id,
+                telephone=data['keyValue'],
+                message="",
+                reference=data["journeyId"],
+                metadata=data["metadata"]
             ),
         ):
-            api_message_repository.create(APIMessageDTO.parse_obj(response))
+            pass
+        
+        return True
 
+    def rec_data(self, data:dict):
+        try:
+            self.execute(
+                MessageBody(
+                    telephone=data['keyValue'],
+                    message="",
+                    reference=data['journeyId'],
+                    metadata=data['metadata']
+                )
+            )
+            return True
+        except:
+            quit()
+
+        
     def get_message(self, data: DataDTO):
         message = data.message
         matches = re.findall(placeholder_regexp, message)
@@ -80,3 +103,23 @@ class OperationsController(Controller):
             if result and "Event." not in result:
                 return result
         return optional
+
+    def execute(self, data:dict):
+        endpoint = Endpoint()
+        print(dict(data))
+        data = dict(data)
+        get_client = IdDest(endpoint, data['telephone'])
+        get_client.execute()
+        print(get_client.id)
+
+        trigger = Trigger(endpoint, get_client.id, data['metadata']['idtemplate'])
+        response = trigger.execute()
+        print(response)
+
+        redirect_flow = RedirectFlow(endpoint, 
+                                     get_client.id, 
+                                     data['metadata']['idsubbot'],
+                                     data['metadata']['idfluxo'],
+                                     data['metadata']['idbloco'])
+        status = redirect_flow.execute()
+        print(status)

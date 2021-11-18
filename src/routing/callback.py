@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from controllers.callbacks_controller import CallbacksController
+from src.controllers.callbacks_controller import CallbacksController
 
 router = APIRouter()
 

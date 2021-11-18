@@ -1,8 +1,8 @@
 from fastapi.routing import APIRouter
 from starlette.requests import Request
 from starlette.responses import HTMLResponse
-from core.settings import templates
-from routing import callback, operation_handler
+from src.core.settings import templates
+from src.routing import callback, operation_handler
 
 routes = APIRouter()
 

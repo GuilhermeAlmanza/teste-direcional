@@ -1,5 +1,5 @@
 from pony import orm
-from database import db_client
+from src.database import db_client
 from datetime import datetime
 
 

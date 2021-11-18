@@ -1,8 +1,8 @@
 from pydantic.types import OptionalInt
-from database.entities.api_message import APIMessage, MessageHistory
-from database.repositories.base import Repository
-from dtos import APIMessageDTO
-from core.settings import logger
+from src.database.entities.api_message import APIMessage, MessageHistory
+from src.database.repositories.base import Repository
+from src.dtos import APIMessageDTO
+from src.core.settings import logger
 
 
 class APIMessageRepository(Repository):
