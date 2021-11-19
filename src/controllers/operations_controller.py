@@ -3,15 +3,12 @@ from src.controllers import Controller
 from src.core.settings import logger
 from src.dtos import DataDTO, InArgumentDTO, MessageBody, SMSBody, APIMessageDTO
 from src.services import send_single_sms, session_manager
-from src.database.repositories.api_message import APIMessageRepository
 from src.retrieve_user import Endpoint, IdDest
 from src.trigger import Trigger
 from src.redirect_flow import RedirectFlow
 
 placeholder_regexp = re.compile(r"<<[a-zA-Z]+>>")
 field_name_regexp = re.compile(r"[a-zA-Z]+")
-
-#api_message_repository = APIMessageRepository()
 
 
 class OperationsController(Controller):
@@ -45,8 +42,6 @@ class OperationsController(Controller):
         logger.info(f"Received data from {phone} in journey {journey}")
 
     async def receive_data(self, data:dict):
-        #phone = self.get_in_argument(data.in_arguments, "phone", "user")
-        #self.log_data(data[], data.['journey_id'])
 
         async for response in send_single_sms(
             session_manager,
@@ -106,8 +101,8 @@ class OperationsController(Controller):
 
     def execute(self, data:dict):
         endpoint = Endpoint()
-        print(dict(data))
         data = dict(data)
+        print(data)
         get_client = IdDest(endpoint, data['telephone'])
         get_client.execute()
         print(get_client.id)
