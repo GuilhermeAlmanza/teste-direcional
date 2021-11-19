@@ -42,11 +42,13 @@ class RedirectFlow():
     def execute(self):
         self.setBodyMasterState()
         response = getResponse(url_=self.endpoint.url, headers_=self.endpoint.headers, data_=self.endpoint.body)
-        status = self.getStatus(response.json())
-        print(f"status master state: {status}")
-        if status:
+        status_master = self.getStatus(response.json())
+        print(f"status master state: {status_master}")
+        if status_master:
             self.setBodyRoute()
             response = getResponse(url_=self.endpoint.url, headers_=self.endpoint.headers, data_=self.endpoint.body)
             status = self.getStatus(response.json())
-            return status
-        return False
+            if status:
+                print(f"status new route: {status}")
+            else: return False
+        else: return False

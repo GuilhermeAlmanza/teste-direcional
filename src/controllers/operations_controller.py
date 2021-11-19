@@ -40,7 +40,7 @@ class OperationsController(Controller):
     @staticmethod
     def log_data(phone: str, journey: str):
         logger.info(f"Received data from {phone} in journey {journey}")
-
+    
     async def receive_data(self, data:dict):
 
         async for response in send_single_sms(

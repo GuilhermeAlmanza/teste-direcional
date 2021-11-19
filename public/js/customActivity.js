@@ -30,12 +30,7 @@ connection.on("initActivity", (data) => {
   createdData.isConfigured = false;
   body = {...body, ...JSON.parse((createdData.arguments || {execute:{body:'{}'}}).execute.body)}
   console.log(body)
-  /*
-  insertInputElement("namespaceField", "Nome Space(Template) Smooch", body.metadata.namespace || '', buildFieldDataListener("namespace"));
-  insertInputElement("nameTemplate", "Nome (Template) Smooch", body.metadata.nametemplate || '', buildFieldDataListener("nametemplate"));
-  insertInputElement("imageField", "Url da Imagem", body.metadata.image || '', buildFieldDataListener("image"));
-  setMessage();
-  */
+  
   insertInputElement("idTemplate", "ID Template (Blip)", body.metadata.namespace || '', buildFieldDataListener("idtemplate"));
   insertInputElement("nameTemplate", "Nome Template (Blip)", body.metadata.nametemplate || '', buildFieldDataListener("nametemplate"));
   insertInputElement("idSubBot", "id Sub (Blip)", body.metadata.idsubbot || '', buildFieldDataListener("idsubbot"));
@@ -43,6 +38,7 @@ connection.on("initActivity", (data) => {
   insertInputElement("idBloco", "id Bloco (Blip)", body.metadata.idbloco || '', buildFieldDataListener("idbloco"));
   setMessage();
 });
+
 
 const setMessage = () => {
   textArea.innerHTML = textArea.innerHTML.replace("{{message}}", body.message || "");
@@ -54,6 +50,7 @@ const setMessage = () => {
     body["message"] = event.target.value
   });
 };
+
 
 const getInAttributes = (field) => {
   for (const item of ((createdData.arguments || {}).execute || {}).inArguments || []) {
