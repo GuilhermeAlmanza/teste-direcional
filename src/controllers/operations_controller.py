@@ -107,7 +107,7 @@ class OperationsController(Controller):
         get_client.execute()
         print(get_client.id)
 
-        trigger = Trigger(endpoint, get_client.id, data['metadata']['idtemplate'])
+        trigger = Trigger(endpoint, get_client.id, data['metadata']['idtemplate'], data['metadata']['nametemplate'])
         response = trigger.execute()
         print(response)
 
