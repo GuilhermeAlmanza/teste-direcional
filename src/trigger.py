@@ -28,7 +28,7 @@ class Trigger():
                         "code":"pt_BR",
                         "policy":"deterministic"
                     },
-                    "components":[f"{self.components}"]
+                    "components":[self.components]
                 }
             }    
         }
