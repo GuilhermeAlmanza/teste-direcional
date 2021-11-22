@@ -57,8 +57,10 @@ class OperationsController(Controller):
         return True
     
     def getPhone(self, list_data:list):
+        print("list de data: ", list_data)
         telephone = ""
         for items in list_data:
+            print(f"itens: {items}")
             if 'Telephone' in items:
                 telephone = items['Telephone']
         print(f"get telefone:{telephone}")
