@@ -11,7 +11,7 @@ class Trigger():
         self.name_template = name_template
 
     def setBody(self):
-        self.endpoint.url = "https://http.msging.net/messages"
+        self.endpoint.url = "https://msging.net/messages"
         self.endpoint.body = {
             "id":f"{uuid.uuid4()}",
             "to":f"{self.id_account}",
