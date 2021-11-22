@@ -20,7 +20,7 @@ class Trigger():
                 "type":"template",
                 "template":{
                     "namespace":f"{self.id_template}",
-                    "name":f"{self.template_name}",
+                    "name":f"{self.name_template}",
                     "language":{
                         "code":"pt_BR",
                         "policy":"deterministic"
