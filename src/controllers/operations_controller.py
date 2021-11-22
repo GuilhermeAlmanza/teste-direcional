@@ -56,14 +56,13 @@ class OperationsController(Controller):
         
         return True
     
+
+    #Telefone é o campo na DE -> modificar de acordo com a mesma
     def getPhone(self, list_data:list):
-        print("list de data: ", list_data)
         telephone = ""
         for items in list_data:
-            print(f"itens: {items}")
             if 'Telefone' in items:
                 telephone = items['Telefone']
-        print(f"get telefone:{telephone}")
         return telephone
         
     def parsePhone(self, phone:str) -> str:
