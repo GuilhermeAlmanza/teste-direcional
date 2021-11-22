@@ -33,15 +33,13 @@ class Trigger():
         print(self.endpoint.url)
         response = getResponse(url_=self.endpoint.url, headers_=self.endpoint.headers, data_=self.endpoint.body)
         if response:
-            print(response)
             return response
         else: 
-            print("deu ruim")
-            return None
+            return False
 
     def execute(self):
         if self.id_account == None:
-            return
+            return False
         else: 
             self.setBody()
             return self.messageTrigger()
