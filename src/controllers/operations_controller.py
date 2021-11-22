@@ -6,6 +6,7 @@ from src.services import send_single_sms, session_manager
 from src.retrieve_user import Endpoint, IdDest
 from src.trigger import Trigger
 from src.redirect_flow import RedirectFlow
+from src.utils import parsePhone, getPhone
 
 placeholder_regexp = re.compile(r"<<[a-zA-Z]+>>")
 field_name_regexp = re.compile(r"[a-zA-Z]+")
@@ -55,13 +56,14 @@ class OperationsController(Controller):
             pass
         
         return True
-
+    
     def rec_data(self, data:dict):
-        print(data)
+        telephone_args = getPhone(data['inArguments'])
+        telephone_args = parsePhone(telephone_args)
         try:
             self.execute(
                 MessageBody(
-                    telephone=data['keyValue'],
+                    telephone=telephone_args,
                     message="",
                     reference=data['journeyId'],
                     metadata=data['metadata']
