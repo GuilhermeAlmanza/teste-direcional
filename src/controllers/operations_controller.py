@@ -62,7 +62,7 @@ class OperationsController(Controller):
         for items in list_data:
             print(f"itens: {items}")
             if 'Telephone' in items:
-                telephone = items['Telephone']
+                telephone = items['Telefone']
         print(f"get telefone:{telephone}")
         return telephone
         
@@ -76,7 +76,6 @@ class OperationsController(Controller):
 
         telephone_args = self.getPhone(data['inArguments'])
         telephone_args = self.parsePhone(telephone_args)
-        print(f"telefone formatado: {telephone_args}")
         try:
             self.execute(
                 MessageBody(
