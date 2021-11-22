@@ -61,6 +61,7 @@ class OperationsController(Controller):
         for items in list_data:
             if 'Telephone' in items:
                 telephone = items['Telephone']
+        print(f"get telefone:{telephone}")
         return telephone
         
     def parsePhone(self, phone:str) -> str:
