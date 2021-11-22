@@ -61,7 +61,7 @@ class OperationsController(Controller):
         telephone = ""
         for items in list_data:
             print(f"itens: {items}")
-            if 'Telephone' in items:
+            if 'Telefone' in items:
                 telephone = items['Telefone']
         print(f"get telefone:{telephone}")
         return telephone
