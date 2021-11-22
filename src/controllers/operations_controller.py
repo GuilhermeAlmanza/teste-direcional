@@ -53,7 +53,7 @@ class OperationsController(Controller):
             ),
         ):
             pass
-        
+        print(data)
         return True
 
     def rec_data(self, data:dict):

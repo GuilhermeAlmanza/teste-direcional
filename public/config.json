@@ -20,7 +20,7 @@
     }
   },
   "configurationArguments": {
-    "applicationExtensionKey": "7fa691d9-d3a6-41c4-8224-326784436dcf",
+    "applicationExtensionKey": "2609a6c0-b2e6-4f75-a4b5-ab1aed7fd391",
     "save": {
       "url": "https://direcional-salesforce.herokuapp.com/api/save",
       "verb": "POST",
