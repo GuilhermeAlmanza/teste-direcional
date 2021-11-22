@@ -6,7 +6,6 @@ from src.services import send_single_sms, session_manager
 from src.retrieve_user import Endpoint, IdDest
 from src.trigger import Trigger
 from src.redirect_flow import RedirectFlow
-from src.utils import parsePhone, getPhone
 
 placeholder_regexp = re.compile(r"<<[a-zA-Z]+>>")
 field_name_regexp = re.compile(r"[a-zA-Z]+")
@@ -57,9 +56,23 @@ class OperationsController(Controller):
         
         return True
     
+    def getPhone(self, list_data:list):
+        telephone = ""
+        for items in list_data:
+            if 'Telephone' in items:
+                telephone = items['Telephone']
+        return telephone
+        
+    def parsePhone(self, phone:str) -> str:
+        phone.removeprefix('+')
+        if not('55' in phone):
+            phone = '+55' + phone
+        return phone
+
     def rec_data(self, data:dict):
-        telephone_args = getPhone(data['inArguments'])
-        telephone_args = parsePhone(telephone_args)
+        print(data)
+        telephone_args = self.getPhone(data['inArguments'])
+        telephone_args = self.parsePhone(telephone_args)
         try:
             self.execute(
                 MessageBody(
