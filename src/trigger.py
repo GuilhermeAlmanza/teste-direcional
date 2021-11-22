@@ -37,8 +37,8 @@ class Trigger():
         else: return None
 
     def execute(self):
-        print("trigger exec")
         if self.id_account == None:
+            print("self id == none")
             return
         else: 
             self.setBody()
