@@ -10,8 +10,6 @@ class Trigger():
         self.id_template = id_template
         self.name_template = name_template
 
-
-
     def setBody(self):
         self.endpoint.url = "https://http.msging.net/messages"
         self.endpoint.body = {
@@ -33,11 +31,13 @@ class Trigger():
 
     def messageTrigger(self):
         response = getResponse(url_=self.endpoint.url, headers_=self.endpoint.headers, data_=self.endpoint.body)
+        print(response)
         if response:
             return response
         else: return None
 
     def execute(self):
+        print("trigger exec")
         if self.id_account == None:
             return
         else: 
