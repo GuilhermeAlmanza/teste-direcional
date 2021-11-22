@@ -57,7 +57,6 @@ class OperationsController(Controller):
         return True
     
     def getPhone(self, list_data:list):
-        print("getPhone")
         telephone = ""
         for items in list_data:
             if 'Telephone' in items:
@@ -65,16 +64,16 @@ class OperationsController(Controller):
         return telephone
         
     def parsePhone(self, phone:str) -> str:
-        print("parsePhone")
         phone.removeprefix('+')
         if not('55' in phone):
             phone = '+55' + phone
         return phone
 
     def rec_data(self, data:dict):
-        print(data['inArguments'])
+
         telephone_args = self.getPhone(data['inArguments'])
         telephone_args = self.parsePhone(telephone_args)
+        print(f"telefone formatado: {telephone_args}")
         try:
             self.execute(
                 MessageBody(
@@ -87,7 +86,6 @@ class OperationsController(Controller):
             return True
         except:
             return False
-
         
     def get_message(self, data: DataDTO):
         message = data.message
@@ -118,9 +116,9 @@ class OperationsController(Controller):
         return optional
 
     def execute(self, data:dict):
+        print("executing...")
         endpoint = Endpoint()
         data = dict(data)
-        print(data)
         get_client = IdDest(endpoint, data['telephone'])
         get_client.execute()
         print(get_client.id)
