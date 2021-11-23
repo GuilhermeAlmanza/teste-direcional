@@ -7,3 +7,4 @@ def getResponse(url_:str, headers_:dict, data_:dict) -> dict:
         return request
     except:
         return {}
+        

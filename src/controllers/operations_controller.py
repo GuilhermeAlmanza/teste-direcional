@@ -72,7 +72,7 @@ class OperationsController(Controller):
         return phone
 
     def rec_data(self, data:dict):
-
+        print(data)
         telephone_args = self.getPhone(data['inArguments'])
         telephone_args = self.parsePhone(telephone_args)
         try:
