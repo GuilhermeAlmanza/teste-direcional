@@ -1,11 +1,8 @@
 import re
 from src.controllers import Controller
 from src.core.settings import logger
-from src.dtos import DataDTO, InArgumentDTO, MessageBody, SMSBody, APIMessageDTO
-from src.services import send_single_sms, session_manager
-from src.retrieve_user import Endpoint, IdDest
-from src.trigger import Trigger
-from src.redirect_flow import RedirectFlow
+from src.dtos import DataDTO, InArgumentDTO, MessageBody
+from src.services import send_whatsapp
 
 placeholder_regexp = re.compile(r"<<[a-zA-Z]+>>")
 field_name_regexp = re.compile(r"[a-zA-Z]+")
@@ -13,7 +10,6 @@ field_name_regexp = re.compile(r"[a-zA-Z]+")
 
 class OperationsController(Controller):
     def include_routes(self):
-        #self.router.post("/data", name="receive data")(self.receive_data)
         self.router.post("/data", name="receive data")(self.rec_data)
         self.router.post("/save", response_model=None, name="save")(self.save)
         self.router.post("/validate", response_model=None, name="validate")(
@@ -40,22 +36,7 @@ class OperationsController(Controller):
     @staticmethod
     def log_data(phone: str, journey: str):
         logger.info(f"Received data from {phone} in journey {journey}")
-    
-    async def receive_data(self, data:dict):
-
-        async for response in send_single_sms(
-            session_manager,
-            SMSBody(
-                telephone=data['keyValue'],
-                message="",
-                reference=data["journeyId"],
-                metadata=data["metadata"]
-            ),
-        ):
-            pass
         
-        return True
-    
 
     #Telefone é o campo na DE -> modificar de acordo com a mesma
     def getPhone(self, list_data:list):
@@ -76,7 +57,7 @@ class OperationsController(Controller):
         telephone_args = self.getPhone(data['inArguments'])
         telephone_args = self.parsePhone(telephone_args)
         try:
-            self.execute(
+            send_whatsapp(
                 MessageBody(
                     telephone=telephone_args,
                     message="",
@@ -115,23 +96,3 @@ class OperationsController(Controller):
             if result and "Event." not in result:
                 return result
         return optional
-
-    def execute(self, data:dict):
-        print("executing...")
-        endpoint = Endpoint()
-        data = dict(data)
-        get_client = IdDest(endpoint, data['telephone'])
-        get_client.execute()
-        print(get_client.id)
-
-        trigger = Trigger(endpoint, get_client.id, data['metadata']['idtemplate'], data['metadata']['nametemplate'])
-        response = trigger.execute()
-        print(response)
-
-        redirect_flow = RedirectFlow(endpoint, 
-                                     get_client.id, 
-                                     data['metadata']['idsubbot'],
-                                     data['metadata']['idfluxo'],
-                                     data['metadata']['idbloco'])
-        status = redirect_flow.execute()
-        print(status)

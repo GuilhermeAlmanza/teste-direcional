@@ -1,6 +1,6 @@
-from aiohttp.helpers import BasicAuth
-from src.core.settings import logger
-from src.dtos import SMSBody
+from src.retrieve_user import Endpoint, IdDest
+from src.trigger import Trigger
+from src.redirect_flow import RedirectFlow
 from aiohttp import ClientSession
 
 import asyncio
@@ -9,8 +9,6 @@ from typing import Any, AsyncGenerator
 from aiohttp import ClientSession
 from urllib.parse import urlparse
 from functools import cache
-from src.core.settings import SECRET_SMOOCH,APP_ID_SMOOCH,ID_INTEGRATION_WHATSAPP_SMOOCH,ID_SMOOCH
-
 
 class SessionManager:
     def __init__(self, *, delay: bool):
@@ -54,63 +52,22 @@ class SessionManager:
     async def finish(self):
         await asyncio.gather(*[value.close() for value in self.clients.values()])
 
+def send_whatsapp(data:dict):
+    print("executing...")
+    endpoint = Endpoint()
+    data = dict(data)
+    get_client = IdDest(endpoint, data['telephone'])
+    get_client.execute()
+    print(get_client.id)
 
-session_manager = SessionManager(delay=True)
+    trigger = Trigger(endpoint, get_client.id, data['metadata']['idtemplate'], data['metadata']['nametemplate'])
+    response = trigger.execute()
+    print(response)
 
-
-async def send_single_sms(client: SessionManager, data: SMSBody) -> AsyncGenerator[dict, None]:
-
-    logger.info(data.dict(by_alias=True))
-    async for response in client.post(
-        "https://api.smooch.io/v1.1/apps/"+f"{ID_SMOOCH}/"+"notifications",
-        json=return_body_whatsapp(data.dict()),
-        headers={"Content-Type":"application/json","Authorization":jwt_smooch_bearer()},
-    ):
-        yield response
-
-
-def jwt_smooch_bearer():
-
-    '''
-        Retorna o JWT(Bearer token) para chamadas no smooch do cliente
-    '''
-
-    return 'Bearer ' + str(jwt.encode({'scope': 'app'}, SECRET_SMOOCH, algorithm='HS256', headers={'kid': APP_ID_SMOOCH}))
-
-
-def return_body_whatsapp(data:dict):
-    return {
-
-        "destination":{
-            "integrationId":f"{ID_INTEGRATION_WHATSAPP_SMOOCH}",
-            "destinationId":f"{data['telephone']}"
-        },
-        "author":{
-            "role":"appMaker"
-        },
-        "messageSchema":"whatsapp",
-        "message":{
-            "type":"template",
-            "template":{
-                "namespace":f"{data['metadata']['namespace']}",
-                "name":f"{data['metadata']['nametemplate']}",
-                "language":{
-                    "policy":"deterministic",
-                    "code":"pt_BR"
-                },
-                "components":[
-                    {
-                    "type":"header",
-                    "parameters":[
-                        {
-                            "type":"image",
-                            "image":{
-                                "link":f"{data['metadata']['image']}"
-                            }
-                        }
-                    ]
-                    }
-                ]
-            }
-        }
-        }
+    redirect_flow = RedirectFlow(endpoint, 
+                                    get_client.id, 
+                                    data['metadata']['idsubbot'],
+                                    data['metadata']['idfluxo'],
+                                    data['metadata']['idbloco'])
+    status = redirect_flow.execute()
+    print(status)
