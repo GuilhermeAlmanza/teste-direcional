@@ -52,6 +52,8 @@ class SessionManager:
     async def finish(self):
         await asyncio.gather(*[value.close() for value in self.clients.values()])
 
+session_manager = SessionManager(delay=True)
+
 def send_whatsapp(data:dict):
     print("executing...")
     endpoint = Endpoint()
