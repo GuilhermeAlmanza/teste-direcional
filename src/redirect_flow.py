@@ -50,5 +50,6 @@ class RedirectFlow():
             status = self.getStatus(response.json())
             if status:
                 print(f"status new route: {status}")
+                return True
             else: return False
         else: return False
